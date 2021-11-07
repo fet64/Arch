@@ -1,5 +1,5 @@
 # Guide for installing Arch Linux
-This is my way of setting up Arch Linux
+Install Arch Linux with encryption
 
 # Preperations
 1. Get latest arch iso from https://archlinux.org/download/
@@ -120,3 +120,109 @@ nvme0n1       259:0    0 931.5G  0 disk
 # pacstrap /mnt base linux linux-firmware intel-ucode vim 
 ```
 
+# Generate Filesystem Table (fstab)
+```
+# genfstab -U /mnt >> /mnt/etc/fstab
+```
+
+# Chroot into system
+```
+# arch-chroot /mnt
+```
+
+# Timezone and sync time
+```
+# ls -sf /usr/share/zoneinfo/Europe/Stockholm /etc/localtime
+# hwclock --systohc
+```
+
+# Locale
+Remove # from your selected locale in locale.gen, I use en_US.UTF-8. Update locale.conf.
+```
+# vim /etc/locale.gen
+
+...
+#en_SG.UTF-8 UTF-8
+#en_SG ISO-8859-1
+en_US.UTF-8 UTF-8
+#en_US ISO-8859-1
+#en_ZA.UTF-8 UTF-8
+...
+
+# locale-gen
+# echo LANG=en_US.UTF-8 > /etc/locale.conf
+# echo KEYMAP=sv-latin1 > /etc/vconsole.conf
+```
+
+# Hostname
+```
+# echo arch > /etc/hostname
+```
+
+# Hostfile
+```
+# vim /etc/hosts
+
+# Static table lookup for hostnames.
+# See hosts(5) for details.
+127.0.0.1	localhost
+::1     localhost
+127.0.1.1	arch.localdomain	arch
+```
+
+# Password for root user and create a user
+```
+# passwd
+# useradd -mG wheel USERNAME
+# passwd USERNAME
+# EDITOR=vim visudo
+
+remove # at the start of the following line:
+%wheel ALL=(ALL) ALL
+```
+
+# Install packages
+```
+# pacman -S grub efibootmgr networkmanager network-manager-applet dialog wpa_supplicant mtools dosfstools base-devel linux-headers bluez bluez-utils cups xdg-utils xdg-user-dirs alsa-utils pulseaudio pulseaudio-bluetooth git reflector
+```
+
+
+# Fix mkinitcpio.conf
+```
+# vim /etc/mkinitcpio.conf
+
+edit HOOKS:
+HOOKS=(base udev autodetect keyboard keymap modconf block encrypt filesystems fsck)
+
+# mkinitcpio -p linux
+```
+
+# Install GRUB
+```
+# grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
+# grub-mkconfig -o /boot/grub/grub.cfg
+
+Find UUID of encrypted partition:
+# blkid
+Copy UUID and change /etc/default/grub
+# vim /etc/default/grub
+...
+GRUB_CMDLINE_LINUX="cryptdevice=UUID=11111111-2222-3333-4444-555555555555:cryptroot root=/dev/mapper/cryptroot"
+...
+# grub-mkconfig -o /boot/grub/grub.cfg
+```
+
+# Enable system services
+```
+# systemctl enable NetworkManager
+# systemctl enable bluetooth
+# systemctl enable cups
+```
+
+# Finishing the base install
+```
+Exit arch-chroot environment
+# exit
+# umount -a
+# reboot
+```
