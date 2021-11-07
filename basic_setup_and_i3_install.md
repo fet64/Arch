@@ -17,7 +17,12 @@ $ sudo systemctl enable --now reflector.timer
 $ sudo systemctl enable --now fstrim.timer
 
 Install i3
-$ sudo pacman -S xorg xf86-video-intel dmenu lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings ttf-dejavu ttf-liberation noto-fonts firefox nitrogen picom lxappearance pcmanfm materia-gtk-theme papirus-icon-theme alacritty archlinux-wallpaper
+$ sudo pacman -S xorg xf86-video-intel \
+  dmenu lightdm lightdm-gtk-greeter \
+  lightdm-gtk-greeter-settings ttf-dejavu \
+  ttf-liberation noto-fonts firefox nitrogen \
+  picom lxappearance pcmanfm materia-gtk-theme \
+  papirus-icon-theme alacritty archlinux-wallpaper
 $ sudo systemctl enable lightdm
 $ reboot
 ```
