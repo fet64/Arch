@@ -130,6 +130,15 @@ nvme0n1       259:0    0 931.5G  0 disk
 # arch-chroot /mnt
 ```
 
+# Use script from github
+```
+# git clone https://github.com/fet64/arch
+# chmod +x after_chroot.sh
+# ./after_chroot.sh
+
+or continue belov
+```
+
 # Timezone and sync time
 ```
 # ls -sf /usr/share/zoneinfo/Europe/Stockholm /etc/localtime
