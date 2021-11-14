@@ -49,7 +49,7 @@ $ startx
 * dwm-fullgaps-6.2.diff
 # Suckless ST termnial
 * Download ST source from https://st.suckless.org/
-* Edit config.def.h
+* Edit config.def.h or use mine: https://github.com/fet64/Arch/tree/main/suckless/st
 * Compile:
 ```
 $ sudo cp config.def.h config.h
@@ -61,7 +61,7 @@ $ sudo make clean install
 
 # Suckless SLSTATUS
 * Download slstatus source from https://tools.suckless.org/slstatus/
-* Edit config.def.h
+* Edit config.def.h or use mine: https://github.com/fet64/Arch/tree/main/suckless/slstatus
 * Compile:
 ```
 $ sudo cp config.def.h config.h
