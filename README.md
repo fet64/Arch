@@ -30,8 +30,9 @@ nvme0n1       259:0    0 931.5G  0 disk
 * using dd:
 
 ```
-# dd bs=4M if=/path/to/iso of=/dev/sda conv=fsync oflag=direct status=progress
+# dd bs=4M if=/path/to/iso of=/dev/sda conv=fsync oflag=sync status=progress
 ```
+# Boot laptop with your usb
 
 5. Set the console keyboard layout
 
