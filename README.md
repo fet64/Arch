@@ -74,15 +74,10 @@ For WWAN (simular to iwctl):
 ```
 # gdisk /dev/nvme0n1
 :o
-:n  :1  :first sector: default :last sector: +500M code:ef00
-:n  :2  :first sector: default :last sector: +32G  code:8200
-:n  :3  :first sector: default :last sector: default code:8300
+:n  :1  :first sector: default :last sector: +512M code:ef00
+:n  :2  :first sector: default :last sector: default code:8300
 :w
-
-Number  Start (sector)    End (sector)  Size       Code  Name
-   1            2048         1026047   500.0 MiB   EF00  EFI system partition
-   2         1026048        68134911   32.0 GiB    8200  Linux swap
-   3        68134912      1953525134   899.0 GiB   8300  Linux filesystem
+ 
 ```
 
 Use lsblk to check on your work:
@@ -94,18 +89,15 @@ sda             8:0    1  29.3G  0 disk
 ├─sda1          8:1    1   760M  0 part
 └─sda2          8:2    1    86M  0 part
 nvme0n1       259:0    0 931.5G  0 disk
-├─nvme0n1p1   259:1    0   500M  0 part  
-├─nvme0n1p2   259:2    0    32G  0 part  
-└─nvme0n1p3   259:3    0   899G  0 part
+├─nvme0n1p1   259:1    0   512M  0 part  
+└─nvme0n1p3   259:3    0   931G  0 part
 ```
 
 # Create Filesystems
 ```
 # mkfs.vfat -F32 /dev/nvme0n1p1
-# mkswap /dev/nvme0n1p2
-# swapon /dev/nvme0n1p2
-# cryptsetup -y -v luksFormat /dev/nvme0n1p3
-# cryptsetup open /dev/nvme0n1p3 cryptroot
+# cryptsetup -y -v luksFormat /dev/nvme0n1p2
+# cryptsetup open /dev/nvme0n1p2 cryptroot
 # mkfs.ext4 /dev/mapper/cryptroot
 ```
 
@@ -116,9 +108,18 @@ nvme0n1       259:0    0 931.5G  0 disk
 # mount /dev/nvme0n1p1 /mnt/boot
 ```
 
+# Create Swap File (not in VMs)
+```
+# dd if=/dev/zero of=/mnt/swapfile bs=1M count=24576 status=progress
+Make the swapfile as big as you like, usually around 1.5 times the size of your RAM
+# chmod 600 /mnt/swapfile
+# mkswap /mnt/swapfile
+# swapon /mnt/swapfile
+```
+
 # Install base packages
 ```
-# pacstrap /mnt base linux linux-firmware intel-ucode vim git
+# pacstrap /mnt base base-devel mkinitcpio linux linux-firmware intel-ucode vim git
 ```
 
 # Generate Filesystem Table (fstab)
@@ -183,7 +184,7 @@ en_US.UTF-8 UTF-8
 # Password for root user and create a user
 ```
 # passwd
-# useradd -mG wheel USERNAME
+# useradd -mG wheel,audio,video USERNAME
 # passwd USERNAME
 # EDITOR=vim visudo
 
@@ -208,7 +209,9 @@ HOOKS=(base udev autodetect keyboard keymap modconf block encrypt filesystems fs
 ```
 
 # Install GRUB
+
 ```
+# pacman -S grub efibootmgr intel-ucode
 # grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
 # grub-mkconfig -o /boot/grub/grub.cfg
 
