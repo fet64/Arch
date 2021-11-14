@@ -47,7 +47,6 @@ $ startx
 ## Installed patches
 * dwm-alpha-20201019-61bb8b2.diff
 * dwm-fullgaps-6.2.diff
-*
 # Suckless ST termnial
 * Download ST source from https://st.suckless.org/
 * Edit config.def.h
