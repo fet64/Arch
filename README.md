@@ -239,3 +239,5 @@ Exit arch-chroot environment
 # umount -a
 # reboot
 ```
+# Install your fresh new system as you like
+Don't forget to use git when you mess around your new configs...
