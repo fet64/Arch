@@ -18,10 +18,10 @@ $ sudo systemctl enable --now fstrim.timer
 ```
 # Suckless DWM
 * Download DWM source from https://dwm.suckless.org/
-* Edit config.def.h
 * Compile:
 ```
 $ sudo cp config.def.h config.h
+$ vim config.h
 $ sudo make clean install
 ```
 * Put xinitrc in your home directory and change name to .xinitrc or put this at the end of your .xinitrc:
@@ -37,10 +37,11 @@ $ startx
 * dwm-fullgaps-6.2.diff
 # Suckless ST termnial
 * Download ST source from https://st.suckless.org/
-* Edit config.def.h or use mine: https://github.com/fet64/Arch/tree/main/suckless/st
+* Edit config.h or use mine: https://github.com/fet64/Arch/tree/main/suckless/st
 * Compile:
 ```
 $ sudo cp config.def.h config.h
+$ vim config.h
 $ sudo make clean install
 ```
 ## Installed patches
@@ -49,10 +50,11 @@ $ sudo make clean install
 
 # Suckless SLSTATUS
 * Download slstatus source from https://tools.suckless.org/slstatus/
-* Edit config.def.h or use mine: https://github.com/fet64/Arch/tree/main/suckless/slstatus
+* Edit config.h or use mine: https://github.com/fet64/Arch/tree/main/suckless/slstatus
 * Compile:
 ```
 $ sudo cp config.def.h config.h
+$ vim config.h
 $ sudo make clean install
 ```
 Edit .xinitrc and add 
@@ -61,17 +63,19 @@ slstatus &
 ```
 # Suckless SLOCK
 * Download slock source from https://tools.suckless.org/slock/
-* Edit config.def.h
+* Edit config.h
 * Compile:
 ```
 $ sudo cp config.def.h config.h
+$ vim config.h
 $ sudo make clean install
 ```
 # Suckless DMENU
 * Download dmenu source from https://tools.suckless.org/dmenu/
-* Edit config.def.h
+* Edit config.h
 * Compile:
 ```
 $ sudo cp config.def.h config.h
+$ vim config.h
 $ sudo make clean install
 ```
