@@ -239,5 +239,5 @@ Exit arch-chroot environment
 # umount -a
 # reboot
 ```
-# Install your fresh new system as you like
-Don't forget to use git when you mess around your new configs...
+# Install your dotfiles
+I store my dotfiles: https://github.com/fet64/dotfiles
