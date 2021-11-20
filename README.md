@@ -1,7 +1,7 @@
 # Guide for installing Arch Linux
 Install Arch Linux with encryption
 
-# Preperations
+## Preperations
 1. Get latest arch iso from https://archlinux.org/download/
 2. Find out the name of your USB drive with lsblk
 
@@ -32,7 +32,7 @@ nvme0n1       259:0    0 931.5G  0 disk
 ```
 # dd bs=4M if=/path/to/iso of=/dev/sda conv=fsync oflag=sync status=progress
 ```
-# Boot laptop with your usb
+## Boot laptop with your usb
 
 5. Set the console keyboard layout
 
@@ -69,7 +69,7 @@ For WWAN (simular to iwctl):
 # pacman -Syyy
 ```
 
-# Partition the disk
+## Partition the disk
 
 ```
 # gdisk /dev/nvme0n1
@@ -93,7 +93,7 @@ nvme0n1       259:0    0 931.5G  0 disk
 └─nvme0n1p3   259:3    0   931G  0 part
 ```
 
-# Create Filesystems
+## Create Filesystems
 ```
 # mkfs.vfat -F32 /dev/nvme0n1p1
 # cryptsetup -y -v luksFormat /dev/nvme0n1p2
@@ -101,14 +101,14 @@ nvme0n1       259:0    0 931.5G  0 disk
 # mkfs.ext4 /dev/mapper/cryptroot
 ```
 
-# Mount Filesystems
+## Mount Filesystems
 ```
 # mount /dev/mapper/cryptroot /mnt
 # mkdir /mnt/boot
 # mount /dev/nvme0n1p1 /mnt/boot
 ```
 
-# Create Swap File (not in VMs)
+## Create Swap File (not in VMs)
 ```
 # dd if=/dev/zero of=/mnt/swapfile bs=1M count=24576 status=progress
 Make the swapfile as big as you like, usually around 1.5 times the size of your RAM
@@ -117,22 +117,22 @@ Make the swapfile as big as you like, usually around 1.5 times the size of your 
 # swapon /mnt/swapfile
 ```
 
-# Install base packages
+## Install base packages
 ```
 # pacstrap /mnt base base-devel mkinitcpio linux linux-firmware intel-ucode vim git
 ```
 
-# Generate Filesystem Table (fstab)
+## Generate Filesystem Table (fstab)
 ```
 # genfstab -U /mnt >> /mnt/etc/fstab
 ```
 
-# Chroot into system
+## Chroot into system
 ```
 # arch-chroot /mnt
 ```
 
-# Use script from github
+## Use script from github
 ```
 # git clone https://github.com/fet64/arch
 # chmod +x after_chroot.sh
@@ -141,13 +141,13 @@ Make the swapfile as big as you like, usually around 1.5 times the size of your 
 or continue belov
 ```
 
-# Timezone and sync time
+## Timezone and sync time
 ```
 # ls -sf /usr/share/zoneinfo/Europe/Stockholm /etc/localtime
 # hwclock --systohc
 ```
 
-# Locale
+## Locale
 Remove # from your selected locale in locale.gen, I use en_US.UTF-8. Update locale.conf.
 ```
 # vim /etc/locale.gen
@@ -165,12 +165,12 @@ en_US.UTF-8 UTF-8
 # echo KEYMAP=sv-latin1 > /etc/vconsole.conf
 ```
 
-# Hostname
+## Hostname
 ```
 # echo arch > /etc/hostname
 ```
 
-# Hostfile
+## Hostfile
 ```
 # vim /etc/hosts
 
@@ -181,7 +181,7 @@ en_US.UTF-8 UTF-8
 127.0.1.1	arch.localdomain	arch
 ```
 
-# Password for root user and create a user
+## Password for root user and create a user
 ```
 # passwd
 # useradd -mG wheel,audio,video USERNAME
@@ -192,13 +192,13 @@ remove # at the start of the following line:
 %wheel ALL=(ALL) ALL
 ```
 
-# Install packages
+## Install packages
 ```
 # pacman -S grub efibootmgr networkmanager network-manager-applet dialog wpa_supplicant mtools dosfstools base-devel linux-headers bluez bluez-utils cups xdg-utils xdg-user-dirs alsa-utils pulseaudio pulseaudio-bluetooth git reflector
 ```
 
 
-# Fix mkinitcpio.conf
+## Fix mkinitcpio.conf
 ```
 # vim /etc/mkinitcpio.conf
 
@@ -208,7 +208,7 @@ HOOKS=(base udev autodetect keyboard keymap modconf block encrypt filesystems fs
 # mkinitcpio -p linux
 ```
 
-# Install GRUB
+## Install GRUB
 
 ```
 # pacman -S grub efibootmgr intel-ucode
@@ -225,19 +225,19 @@ GRUB_CMDLINE_LINUX="cryptdevice=UUID=11111111-2222-3333-4444-555555555555:cryptr
 # grub-mkconfig -o /boot/grub/grub.cfg
 ```
 
-# Enable system services
+## Enable system services
 ```
 # systemctl enable NetworkManager
 # systemctl enable bluetooth
 # systemctl enable cups
 ```
 
-# Finishing the base install
+## Finishing the base install
 ```
 Exit arch-chroot environment
 # exit
 # umount -a
 # reboot
 ```
-# Install your dotfiles
+## Install your dotfiles
 I store my dotfiles: https://github.com/fet64/dotfiles
